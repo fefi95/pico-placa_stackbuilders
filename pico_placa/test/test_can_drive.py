@@ -1,5 +1,4 @@
 from datetime import datetime
-import pytest
 import unittest
 from ..main import can_drive
 
