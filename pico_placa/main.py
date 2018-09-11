@@ -19,10 +19,12 @@ def validate_license(license_plate):
 def can_drive(license_plate, date_time):
     last_number = license_plate[-1:]
     is_banned = last_number in BANNED_LICENSES[date_time.weekday()]
-    time = date_time.time()
-    return is_banned and \
-        ((time >= MORNING_RANGE[0] and time <= MORNING_RANGE[1]) or \
-        (time >= AFTERNOON_RANGE[0] and time <= AFTERNOON_RANGE[1]) )
+
+    if (is_banned):
+        time = date_time.time()
+        is_banned = ((time >= MORNING_RANGE[0] and time <= MORNING_RANGE[1]) or \
+            (time >= AFTERNOON_RANGE[0] and time <= AFTERNOON_RANGE[1]) )
+    return not is_banned
 
 def main():
     license_plate = sys.argv[1]
@@ -37,7 +39,7 @@ def main():
         date_time = datetime.strptime("%s %s" % (date, time), DATETIME_FORMAT)
         print(date_time)
     except ValueError as e:
-        print("The date or time format is no correct.")
+        print("The date or time format is not correct.")
         exit()
 
     print(can_drive(license_plate, date_time))

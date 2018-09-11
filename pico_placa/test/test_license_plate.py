@@ -1,8 +1,10 @@
 import pytest
+import unittest
 from ..main import validate_license
 
 
-class TestClassValidLicensePlate(object):
+class TestClassValidLicensePlate(unittest.TestCase):
+    """Test that the given license plate is valid."""
     def test_three_numbers(self):
         assert validate_license("PBA-1231")
 
@@ -10,14 +12,15 @@ class TestClassValidLicensePlate(object):
         assert validate_license("PBA-123")
 
 
-class TestClassInvalidLicensePlate(object):
+class TestClassInvalidLicensePlate(unittest.TestCase):
+    """Test that the given license plate is not valid and raises an exception"""
     def test_extra_letter(self):
         with pytest.raises(ValueError):
             validate_license("ABCD-1234")
 
     def test_extra_number(self):
         with pytest.raises(ValueError):
-            validate_license("ABCD-12345")
+            validate_license("ABC-12345")
 
     def test_mixed_letters(self):
         with pytest.raises(ValueError):
@@ -33,6 +36,6 @@ class TestClassInvalidLicensePlate(object):
         with pytest.raises(ValueError):
             validate_license("ABC-a23")
 
-    def test_invalid_license_no_hyphen(self):
+    def test_no_hyphen(self):
         with pytest.raises(ValueError):
             validate_license("PBA123")
