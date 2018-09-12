@@ -4,7 +4,7 @@ import sys
 
 
 DATETIME_FORMAT = "%d/%m/%Y %I:%M%p"
-LICENSE_PATTERN = "[A-Z]{3}-\d{3,4}"
+LICENSE_PATTERN = "[A-Z]{3}-[0-9]{3,4}"
 BANNED_LICENSES = [("1","2"), ("3","4"), ("5","6"), ("7","8"), ("9","0"), (), ()]
 MORNING_RANGE = (time(7, 00), time(9, 30))
 AFTERNOON_RANGE = (time(16, 00), time(19,30))
@@ -42,7 +42,7 @@ def can_drive(license_plate, date_time):
 def main():
     if (len(sys.argv) != 4):
         print("USAGE: python main.py <license_plate> <dd/mm/YYYYY> <h:mmAM/PM>")
-        exit()
+        exit(-1)
 
     license_plate = sys.argv[1]
     date = sys.argv[2]
@@ -52,12 +52,12 @@ def main():
         validate_license(license_plate)
     except ValueError as e:
         print(e)
-        exit()
+        exit(-2)
     try:
         date_time = datetime.strptime("%s %s" % (date, time), DATETIME_FORMAT)
     except ValueError as e:
         print("The date or time format is not correct.")
-        exit()
+        exit(-3)
 
     message = "The car with the license plate %s can "% (license_plate)
     if (can_drive(license_plate, date_time)):
@@ -65,6 +65,7 @@ def main():
     else:
         message += "not drive on %s at %s" % (date, time)
     print(message)
+    exit(0)
 
 if __name__ == "__main__":
     main()
